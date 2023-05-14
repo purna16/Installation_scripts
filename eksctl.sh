@@ -26,6 +26,8 @@ EC2
 VPC
 CloudFormation
 
+#install aws cli and cofigure for no errors(optional)
+
 Create your cluster and nodes
 
 eksctl create cluster --name cluster-name  \
