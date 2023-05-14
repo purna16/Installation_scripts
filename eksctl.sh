@@ -35,7 +35,7 @@ eksctl create cluster --name cluster-name  \
 --node-type instance-type \
 --nodes-min 2 \
 --nodes-max 2 \ 
---zones <AZ-1>,<AZ-2>
+--zones <AZ-1>,<AZ-2> \
 
 example:
 eksctl create cluster --name purna-cluster \
