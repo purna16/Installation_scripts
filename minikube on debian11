@@ -1,0 +1,25 @@
+sudo apt-get update
+sudo apt-get install -y apt-transport-https gnupg2 curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo chmod +x minikube-linux-amd64
+sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+sudo apt-get install -y conntrack
+sudo minikube start --driver=none
+
+#error messege related to crictl use below command
+#sudo apt-get update && sudo apt-get install -y gpg curl
+#curl -LO https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.22.0/crictl-v1.22.0-linux-amd64.tar.gz
+#tar -xzfsudo mv crictl /usr/local/bin
+#crictl-v1.22.0-linux-amd64.tar.gz crictl
+#start minikube with driver none
+
+#error related to bootlock file use below commands
+#sudo sysctl fs.protected_regular=0
+#minikube start --vm-driver=docker
+#minikube delete
+#minikube start --vm-driver=docker
+
