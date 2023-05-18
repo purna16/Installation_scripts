@@ -33,9 +33,9 @@ sudo apt-get install -y kubelet=1.21.1-00 kubeadm=1.21.1-00 kubectl=1.21.1-00 #-
 sudo apt-mark hold kubelet kubeadm kubectl
 #same packages and docker on worker node
 #After installation in which node we run kubeadm it becomes master
-kubeadm init
+sudo kubeadm init
 
-#exit from root user and perform these commands
+#exit from root user and perform these commands on master
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
