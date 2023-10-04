@@ -24,7 +24,7 @@ sudo sysctl --system
 ```
 - These commands help ensure that your system is correctly configured to support the networking and container runtime requirements of Kubernetes. They are typically required steps during the initial setup of a Kubernetes cluster to ensure that pods can communicate with each other and with the external world. The specific settings may vary based on the container runtime and networking solution you're using.
 
-- We need to update apt repository and these packages are often necessary for setting up secure connections and fetching data from remote repositories when installing software or updates on a Linux system
+- We need to update apt repository and these packages are often necessary for setting up secure connections and fetching data from remote repositories when installing software or updates on a Linux system on both nodes
 ```
 sudo apt-get install -y apt-transport-https ca-certificates curl
 ```
@@ -40,7 +40,7 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --
 ```
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 ```
-**install kubelet, kubeadm and kubectl, and pin their version:**
+**install kubelet, kubeadm and kubectl, on bot nodes**
 ```
 sudo apt-get update
 sudo apt-get install -y kubelet=1.27.0-00 kubeadm=1.27.0-00 kubectl=1.27.0-00
@@ -49,7 +49,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 - This command is used to prevent specific packages (in this case, kubelet, kubeadm, and kubectl) from being automatically upgraded when you run system package updates using apt-get
   
-**we need to run kubeadm init now to initialize cluster**
+**we need to run kubeadm init on master to initialize cluster**
 ```
 kubeadm init --apiserver-advertise-address 192.31.21.12 --pod-network-cidr 10.244.0.0/16 --apiserver-cert-extra-sans controlplane
 
@@ -58,7 +58,7 @@ kubeadm init --apiserver-advertise-address 192.31.21.12 --pod-network-cidr 10.24
 - we know about pod network as they come under that specified network range
 - --apiserver-cert-extra-sans controlplane Adding this flag can be useful in cases where you want to access the Kubernetes API server using this name (e.g., https://controlplane:6443), and you want the certificate to be valid for this name
 
-***once done we have to set kubeconfig file**
+***once done we have to set kubeconfig file in master**
 ```
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -70,7 +70,7 @@ kubeadm join 192.31.21.12:6443 --token n8atqp.ebpxafxu33un2ew3 \
         --discovery-token-ca-cert-hash sha256:f74bc6a4fc51da3decdf9e9b0c094a6547857beac9eb0e4149efcff328a0f36e 
 ```
 
-***final step is to configure network***
+***final step is to configure network on master***
 - if we check terminal we can see there is a link to networks we just need to open it or search it on documentation
 - we use flannel as default network
 ```
