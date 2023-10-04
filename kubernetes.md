@@ -1,4 +1,4 @@
-***Installing kubernetes complete procedure using kubeadmin tool***
+***Setting up Kubernetes cluster using kubeadmin tool***
 
 - we need to visit official documentation of kubernetes for installation [Documentation]( https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 
