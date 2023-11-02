@@ -1,0 +1,50 @@
+sudo apt update
+sudo apt install -y \
+ca-certificates \
+curl \
+gnupg \
+lsb-release
+
+
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+
+
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+
+sudo apt install -y containerd.io
+sudo service containerd status
+sudo containerd config default > /etc/containerd/config.toml
+open the file /etc/containerd/config.toml and find the following line
+SystemdCgroup = false
+change to true
+sudo service containerd restart
+
+sudo curl -fsSLo /etc/apt/keyrings/kubernetes.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+apt update
+sudo apt install -y kubeadm kubectl kubelet
+sudo swapoff -a
+
+/etc/fstab open this file and This file shows a mount with the swap type as the last line. It should be removed or commented out so that swap remains disabled after system reboots.
+
+sudo modprobe br_netfilter
+echo br_netfilter | sudo tee /etc/modules-load.d/kubernetes.conf
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+
+source: https://www.howtogeek.com/devops/how-to-start-a-kubernetes-cluster-from-scratch-with-kubeadm-and-kubectl/
