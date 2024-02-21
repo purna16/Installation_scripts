@@ -2,7 +2,7 @@
 
 - we need to visit official documentation of kubernetes for installation [Documentation]( https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 
-**first we need to setup ipv4 forwarding rules befpre installing on control plane and nodes**
+**first we need to setup ipv4 forwarding rules before installing on control plane and nodes**
 ```
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
